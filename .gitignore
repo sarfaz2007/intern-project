@@ -1,0 +1,40 @@
+# General
+node_modules/
+dist/
+build/
+*.log
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+
+# Dependencies
+vendor/
+packages/
+
+# Build outputs
+*.o
+*.so
+*.exe
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Cache
+.cache/
+__pycache__/
+*.pyc
+
+.Backend/node_modules/
+Backend/.env
