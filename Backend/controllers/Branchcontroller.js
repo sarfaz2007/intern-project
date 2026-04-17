@@ -3,14 +3,7 @@ const Branch = require("../models/Branches");
 // CREATE
 exports.createBranch = async (req, res) => {
   try {
-    const { name, location, city } = req.body;
-
-    if (!name) {
-      return res.status(400).json({ message: "Name is required" });
-    }
-
-    const branch = await Branch.create({ name, location, city });
-
+    const branch = await Branch.create(req.body);
     res.status(201).json(branch);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -20,23 +13,20 @@ exports.createBranch = async (req, res) => {
 // GET ALL
 exports.getBranches = async (req, res) => {
   try {
-    const branches = await Branch.find().sort({ createdAt: -1 });
-    res.json(branches);
+    const branches = await Branch.find();
+    res.status(200).json(branches);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// GET SINGLE (optional but useful)
+// GET BY ID
 exports.getBranchById = async (req, res) => {
   try {
     const branch = await Branch.findById(req.params.id);
+    if (!branch) return res.status(404).json({ message: "Not found" });
 
-    if (!branch) {
-      return res.status(404).json({ message: "Branch not found" });
-    }
-
-    res.json(branch);
+    res.status(200).json(branch);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -48,14 +38,10 @@ exports.updateBranch = async (req, res) => {
     const branch = await Branch.findByIdAndUpdate(
       req.params.id,
       req.body,
-      { new: true, runValidators: true }
+      { new: true }
     );
 
-    if (!branch) {
-      return res.status(404).json({ message: "Branch not found" });
-    }
-
-    res.json(branch);
+    res.status(200).json(branch);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -64,13 +50,8 @@ exports.updateBranch = async (req, res) => {
 // DELETE
 exports.deleteBranch = async (req, res) => {
   try {
-    const branch = await Branch.findByIdAndDelete(req.params.id);
-
-    if (!branch) {
-      return res.status(404).json({ message: "Branch not found" });
-    }
-
-    res.json({ message: "Branch deleted successfully" });
+    await Branch.findByIdAndDelete(req.params.id);
+    res.status(200).json({ message: "Branch deleted" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
