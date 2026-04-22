@@ -52,4 +52,15 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// LOGOUT
+router.post("/logout", async (req, res) => {
+  try {
+    return res.status(200).json({
+      message: "Logout successful",
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 module.exports = router;
